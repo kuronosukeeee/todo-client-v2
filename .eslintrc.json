@@ -10,6 +10,7 @@
 		"plugin:import/typescript"
 	],
 	"rules": {
+		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
 		"import/order": [2, { "alphabetize": { "order": "asc" } }]
 	}
