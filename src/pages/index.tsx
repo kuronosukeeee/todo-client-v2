@@ -1,28 +1,11 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { apiClient } from '@/shared/lib/apiClient';
-import { TodoItem } from '@/shared/types';
+import type { NextPage } from 'next';
+import TodoList from '@/components/TodoList';
 
-type HomeProps = {
-	todoitems: TodoItem[];
-};
-
-export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
-	const response = await apiClient.get<TodoItem[]>('api/Todo');
-	return { props: { todoitems: response.data } };
-};
-
-const Home: NextPage<HomeProps> = (props) => {
-	const { todoitems } = props;
+const Home: NextPage = () => {
 	return (
 		<>
 			<h1>TODOリスト</h1>
-			<ul>
-				{todoitems.map((todo) => (
-					<li key={todo.id}>
-						{todo.title}/{todo.description}/{todo.dueDate}
-					</li>
-				))}
-			</ul>
+			<TodoList />
 		</>
 	);
 };
