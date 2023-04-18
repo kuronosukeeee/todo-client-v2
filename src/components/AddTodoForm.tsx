@@ -48,7 +48,7 @@ const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
 					type="datetime-local"
 					value={inputDueDate_UTC}
 					onChange={(e) => {
-						setInputDueDate_UTC(() => e.target.value);
+						setInputDueDate_UTC(e.target.value);
 					}}
 				/>
 			</label>

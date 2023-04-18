@@ -35,7 +35,7 @@ export default class ApiClient {
 			const response: AxiosResponse<TodoItemType[]> = await instance.get(url);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
@@ -47,7 +47,7 @@ export default class ApiClient {
 			const response: AxiosResponse<TodoItemType> = await instance.get(url);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
@@ -59,7 +59,7 @@ export default class ApiClient {
 			const response: AxiosResponse<TodoItemType[]> = await instance.get(url);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
@@ -71,7 +71,7 @@ export default class ApiClient {
 			const response: AxiosResponse<TodoItemType[]> = await instance.get(url);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
@@ -83,19 +83,19 @@ export default class ApiClient {
 			const response: AxiosResponse<TodoItemType> = await instance.post(url, data);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの追加に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
 
 	// 更新
-	static async updateTodoItem(url: string): Promise<any> {
+	static async updateTodoItem(url: string, data?: TodoItemType): Promise<any> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType> = await instance.put(url);
+			const response: AxiosResponse<TodoItemType> = await instance.put(url, data);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの更新に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
@@ -107,7 +107,7 @@ export default class ApiClient {
 			const response: AxiosResponse<TodoItemType> = await instance.delete(url);
 			return response;
 		} catch (error) {
-			console.error('Error posting todo item:', error);
+			console.error('タスクの削除に失敗しました:', error);
 			return Promise.reject(error);
 		}
 	}
