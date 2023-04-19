@@ -3,6 +3,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/modal.css';
+import '../styles/todoItem.css';
 
 // Componentはアクティブなpage、pagePropsはSSR/CSRなどに応じて取得された初期propが格納されるオブジェクト
 export default function App({ Component, pageProps }: AppProps) {

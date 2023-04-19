@@ -1,27 +1,41 @@
 import { useState } from 'react';
+import ErrorMessage from './ErrorMessage';
 import ApiClient from '@/lib/apiClient';
 import { TodoItemType } from '@/types';
 
 type AddTodoFormProps = {
 	todoItems: TodoItemType[];
 	setTodoItems: (todoItems: TodoItemType[]) => void;
+	errorMessage: string;
+	setErrorMessage: (messege: string) => void;
 };
 
-const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
+const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }: AddTodoFormProps) => {
 	const [inputTitle, setInputTitle] = useState('');
 	const [inputDescription, setInputDescription] = useState('');
 	const [inputDueDate_JST, setinputDueDate_JST] = useState('');
 
 	const handleAddTodo = async () => {
-		const response = await ApiClient.postTodoItem('', {
-			title: inputTitle,
-			description: inputDescription,
-			dueDate: inputDueDate_JST,
-			completedDate: null,
-			isCompleted: false,
-		});
-		setTodoItems([...todoItems, response.data]);
-		resetTodo();
+		if (inputTitle === '') {
+			alert('件名は必須項目です');
+		} else if (inputDueDate_JST === '') {
+			alert('期日は必須項目です');
+		} else {
+			try {
+				const response = await ApiClient.postTodoItem('', {
+					title: inputTitle,
+					description: inputDescription,
+					dueDate: inputDueDate_JST,
+					completedDate: null,
+					isCompleted: false,
+				});
+				setTodoItems([...todoItems, response.data]);
+				resetTodo();
+				setErrorMessage('');
+			} catch (error) {
+				setErrorMessage('タスクの追加に失敗しました。もう一度お試しください。');
+			}
+		}
 	};
 
 	const resetTodo = () => {
@@ -34,7 +48,7 @@ const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
 		<>
 			<label>
 				件名:
-				<input type="text" value={inputTitle} onChange={(e) => setInputTitle(e.target.value)} />
+				<input type="text" placeholder="*件名と期日は必須です" value={inputTitle} onChange={(e) => setInputTitle(e.target.value)} />
 			</label>
 			<br />
 			<label>
@@ -55,6 +69,7 @@ const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
 			<br />
 			<button onClick={handleAddTodo}>追加</button>
 			<button onClick={resetTodo}>取消</button>
+			{errorMessage && <ErrorMessage message={errorMessage} handleClose={() => setErrorMessage('')} />}
 		</>
 	);
 };
