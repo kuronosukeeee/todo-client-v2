@@ -10,13 +10,13 @@ type AddTodoFormProps = {
 const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
 	const [inputTitle, setInputTitle] = useState('');
 	const [inputDescription, setInputDescription] = useState('');
-	const [inputDueDate_UTC, setInputDueDate_UTC] = useState('');
+	const [inputDueDate_JST, setinputDueDate_JST] = useState('');
 
 	const handleAddTodo = async () => {
 		const response = await ApiClient.postTodoItem('', {
 			title: inputTitle,
 			description: inputDescription,
-			dueDate: inputDueDate_UTC,
+			dueDate: inputDueDate_JST,
 			completedDate: null,
 			isCompleted: false,
 		});
@@ -27,7 +27,7 @@ const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
 	const resetTodo = () => {
 		setInputTitle('');
 		setInputDescription('');
-		setInputDueDate_UTC('');
+		setinputDueDate_JST('');
 	};
 
 	return (
@@ -46,9 +46,9 @@ const AddTodoForm = ({ todoItems, setTodoItems }: AddTodoFormProps) => {
 				期日:
 				<input
 					type="datetime-local"
-					value={inputDueDate_UTC}
+					value={inputDueDate_JST}
 					onChange={(e) => {
-						setInputDueDate_UTC(e.target.value);
+						setinputDueDate_JST(e.target.value);
 					}}
 				/>
 			</label>

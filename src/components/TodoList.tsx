@@ -6,17 +6,10 @@ import ApiClient from '@/lib/apiClient';
 import { TodoItemType } from '@/types';
 
 const TodoList = () => {
-	const todoItemMock: TodoItemType = {
-		id: 0,
-		title: '',
-		description: '',
-		dueDate: '',
-		completedDate: null,
-		isCompleted: false,
-	};
 	const [todoItems, setTodoItems] = useState<TodoItemType[]>([]);
-	const [currentTodo, setCurrentTodo] = useState<TodoItemType>(todoItemMock);
-	const [showModal, setShowModal] = useState<boolean>(false);
+	const [currentTodo, setCurrentTodo] = useState<TodoItemType | null>(null);
+
+	const showModal = currentTodo !== null;
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -26,23 +19,9 @@ const TodoList = () => {
 		fetchData();
 	}, []);
 
-	const handleEditTodo = (todo: TodoItemType) => {
-		setCurrentTodo(todo);
-		setShowModal(true);
-	};
-
-	// currentTodoが取得できたかどうかの確認
-	useEffect(() => {
-		console.log(currentTodo);
-	}, [currentTodo]);
-
-	const handleClose = () => {
-		setShowModal(false);
-	};
-
-	const handleUpdate = async (id: number, editedTodo: TodoItemType, todoItems: TodoItemType[]) => {
-		await ApiClient.updateTodoItem(`/${id}`, editedTodo);
-		setTodoItems(todoItems.map((todo) => (todo.id === id ? editedTodo : todo)));
+	const handleUpdate = async (editedTodo: TodoItemType) => {
+		await ApiClient.updateTodoItem(`/${editedTodo.id}`, editedTodo);
+		setTodoItems(todoItems.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)));
 	};
 
 	const handleDeleteTodo = async (id: number) => {
@@ -58,7 +37,7 @@ const TodoList = () => {
 					<li key={todo.id}>
 						<button
 							onClick={() => {
-								handleEditTodo(todo);
+								setCurrentTodo(todo);
 							}}
 						>
 							編集
@@ -73,15 +52,7 @@ const TodoList = () => {
 						<TodoItem {...todo} />
 					</li>
 				))}
-				<Modal
-					show={showModal}
-					handleClose={handleClose}
-					handleUpdate={() => {
-						handleUpdate(currentTodo.id, currentTodo, todoItems);
-					}}
-					currentTodo={currentTodo}
-					todoItems={todoItems}
-				/>
+				{showModal && <Modal handleClose={() => setCurrentTodo(null)} handleUpdate={handleUpdate} currentTodo={currentTodo} />}
 			</ul>
 		</>
 	);

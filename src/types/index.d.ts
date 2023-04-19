@@ -10,9 +10,7 @@ export type TodoItemType = {
 export type PostDataType = Omit<TodoItemType, id>;
 
 export type ModalPropsType = {
-	show: boolean;
 	handleClose: () => void;
-	handleUpdate: (id: number, currentTodo: TodoItemType, todoItems: TodoItemType[]) => void;
+	handleUpdate: (editedTodo: TodoItemType) => void;
 	currentTodo: TodoItemType;
-	todoItems: TodoItemType[];
 };

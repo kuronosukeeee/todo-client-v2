@@ -1,33 +1,21 @@
 import React, { useState } from 'react';
 import { ModalPropsType, TodoItemType } from '@/types';
 
-const Modal = ({ show, handleClose, handleUpdate, currentTodo, todoItems }: ModalPropsType) => {
-	const [updateTitle, setUpdateTitle] = useState(currentTodo.title);
-	const [updateDescription, setUpdateDescription] = useState(currentTodo.description);
-	const [updateDueDate, setUpdateDueDate_UTC] = useState(currentTodo.dueDate);
+const Modal = ({ handleClose, handleUpdate, currentTodo }: ModalPropsType) => {
+	const [editedTodo, setEditedTodo] = useState(currentTodo);
 
-	const editedTodo: TodoItemType = {
-		id: currentTodo.id,
-		title: updateTitle,
-		description: updateDescription,
-		dueDate: updateDueDate,
-		completedDate: null,
-		isCompleted: false,
+	const handleChange = (key: keyof TodoItemType, value: string | boolean | null) => {
+		setEditedTodo({ ...editedTodo, [key]: value });
 	};
 
 	const handleSubmit = () => {
-		handleUpdate(editedTodo.id, editedTodo, todoItems);
+		handleUpdate(editedTodo);
 		handleClose();
 	};
 
-	if (!show) {
+	if (!currentTodo) {
 		return null;
 	}
-
-	// UTCをJSTに変換
-	const utcDate = new Date(currentTodo.dueDate);
-	const jstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000);
-	const currentTodoDueDate_JST = jstDate.toISOString().slice(0, 16);
 
 	return (
 		<div className="modal">
@@ -38,10 +26,9 @@ const Modal = ({ show, handleClose, handleUpdate, currentTodo, todoItems }: Moda
 					件名:
 					<input
 						type="text"
-						defaultValue={currentTodo.title}
-						value={updateTitle}
+						value={editedTodo.title}
 						onChange={(e) => {
-							setUpdateTitle(e.target.value);
+							handleChange('title', e.target.value);
 						}}
 					/>
 				</label>
@@ -49,10 +36,9 @@ const Modal = ({ show, handleClose, handleUpdate, currentTodo, todoItems }: Moda
 				<label>
 					詳細:
 					<textarea
-						defaultValue={currentTodo.description}
-						value={updateDescription}
+						value={editedTodo.description}
 						onChange={(e) => {
-							setUpdateDescription(e.target.value);
+							handleChange('description', e.target.value);
 						}}
 						maxLength={100}
 						rows={5}
@@ -65,10 +51,9 @@ const Modal = ({ show, handleClose, handleUpdate, currentTodo, todoItems }: Moda
 					<input
 						type="datetime-local"
 						// JSTで表示できるように変換する
-						defaultValue={currentTodoDueDate_JST}
-						value={updateDueDate}
+						value={editedTodo.dueDate}
 						onChange={(e) => {
-							setUpdateDueDate_UTC(e.target.value);
+							handleChange('dueDate', e.target.value);
 						}}
 					/>
 				</label>
