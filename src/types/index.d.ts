@@ -14,3 +14,15 @@ export type TodoEditModalPropsType = {
 	onUpdateTodo: (editedTodo: TodoItemType) => void;
 	currentTodo: TodoItemType;
 };
+
+type AddTodoFormProps = {
+	todoItems: TodoItemType[];
+	setTodoItems: (todoItems: TodoItemType[]) => void;
+	errorMessage: string;
+	setErrorMessage: (messege: string) => void;
+};
+
+type ErrorMessageProps = {
+	message: string;
+	handleClose: () => void;
+};

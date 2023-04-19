@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import ErrorMessage from './ErrorMessage';
 import ApiClient from '@/lib/apiClient';
-import { TodoItemType } from '@/types';
-
-type AddTodoFormProps = {
-	todoItems: TodoItemType[];
-	setTodoItems: (todoItems: TodoItemType[]) => void;
-	errorMessage: string;
-	setErrorMessage: (messege: string) => void;
-};
+import { AddTodoFormProps } from '@/types';
 
 const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }: AddTodoFormProps) => {
 	const [inputTitle, setInputTitle] = useState('');

@@ -1,7 +1,4 @@
-type ErrorMessageProps = {
-	message: string;
-	handleClose: () => void;
-};
+import { ErrorMessageProps } from '@/types';
 
 const ErrorMessage = ({ message, handleClose }: ErrorMessageProps) => {
 	return (
