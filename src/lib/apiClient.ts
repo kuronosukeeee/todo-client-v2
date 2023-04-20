@@ -1,5 +1,7 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { PostDataType, TodoItemType } from '../types/index';
+import axios from 'axios';
+
+import type { PostDataType, TodoItemType } from '../types/index';
+import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 export default class ApiClient {
 	static createInstance(): AxiosInstance {

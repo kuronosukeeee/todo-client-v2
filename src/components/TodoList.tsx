@@ -1,16 +1,26 @@
 import { useEffect, useState } from 'react';
+
+import AssignmentTurnedInSharpIcon from '@mui/icons-material/AssignmentTurnedInSharp';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Fab } from '@mui/material';
+import { green, orange, red } from '@mui/material/colors';
+
+import ApiClient from '../lib/apiClient';
+
 import AddTodoForm from './AddTodoForm';
 import ErrorMessage from './ErrorMessage';
 import TodoEditModal from './TodoEditModal';
 import TodoFilterRadioButtons from './TodoFilterRadioButtons';
 import TodoItem from './TodoItem';
-import ApiClient from '@/lib/apiClient';
-import { TodoItemType } from '@/types';
+
+import type { TodoItemType } from '../types';
 
 const TodoList = () => {
 	const [todoItems, setTodoItems] = useState<TodoItemType[]>([]);
 	const [currentTodo, setCurrentTodo] = useState<TodoItemType | null>(null);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [selectedValue, setSelectedValue] = useState('all');
 
 	const showModal = currentTodo !== null;
 
@@ -82,31 +92,45 @@ const TodoList = () => {
 		} catch (error) {
 			setErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
 		}
+		setSelectedValue(filter);
 	};
 
 	return (
 		<>
 			<AddTodoForm todoItems={todoItems} setTodoItems={setTodoItems} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
-			<TodoFilterRadioButtons onFilterChange={onFilterChange} />
+			<TodoFilterRadioButtons selectedValue={selectedValue} onFilterChange={onFilterChange} />
 			{todoItems.map((todo) => (
-				<div key={todo.id} className={todo.isCompleted ? 'complete' : ''}>
-					<button onClick={() => handleToggleTodoCompletion(todo.id)}>完了</button>
-					<button
+				<Box display="flex" justifyContent="center" alignItems="center" key={todo.id}>
+					<Fab
+						size="small"
+						color="primary"
+						sx={{ backgroundColor: green[600], '&:hover': { backgroundColor: green[800] } }}
+						onClick={() => handleToggleTodoCompletion(todo.id)}
+					>
+						<AssignmentTurnedInSharpIcon />
+					</Fab>
+					<Fab
+						size="small"
+						color="inherit"
+						sx={{ backgroundColor: orange[600], '&:hover': { backgroundColor: orange[800] }, color: 'white', m: 1.5 }}
 						onClick={() => {
 							setCurrentTodo(todo);
 						}}
 					>
-						編集
-					</button>
-					<button
+						<EditIcon />
+					</Fab>
+					<Fab
+						size="small"
+						color="inherit"
+						sx={{ backgroundColor: red[600], '&:hover': { backgroundColor: red[800] }, color: 'white', mr: 3 }}
 						onClick={() => {
 							handleDeleteTodo(todo.id);
 						}}
 					>
-						削除
-					</button>
+						<DeleteIcon />
+					</Fab>
 					<TodoItem {...todo} />
-				</div>
+				</Box>
 			))}
 			{showModal && <TodoEditModal handleClose={() => setCurrentTodo(null)} onUpdateTodo={onUpdateTodo} currentTodo={currentTodo} />}
 			{errorMessage && <ErrorMessage message={errorMessage} handleClose={() => setErrorMessage('')} />}

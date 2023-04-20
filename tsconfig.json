@@ -14,10 +14,7 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
-		"paths": {
-			"@/*": ["./src/*"],
-			"shared/*": ["./shared/*"]
-		}
+		"paths": {}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]

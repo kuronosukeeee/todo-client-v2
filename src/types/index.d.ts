@@ -26,3 +26,8 @@ type ErrorMessageProps = {
 	message: string;
 	handleClose: () => void;
 };
+
+type TodoFilterRadioButtonsProps = {
+	selectedValue: string;
+	onFilterChange: (filterOption: 'all' | 'incomplete' | 'complete') => void;
+};
