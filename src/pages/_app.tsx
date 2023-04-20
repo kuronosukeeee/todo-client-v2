@@ -1,7 +1,7 @@
 // Next.jsではAppコンポーネントを使用して全てのページを初期化するため、Appコンポーネントを継承したクラスが格納される_app.tsxを作成し、再定義することで、デフォルトのAppコンポーネントを上書きできる
 
 import { CacheProvider, ThemeProvider } from '@emotion/react';
-import { Container, CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import Head from 'next/head';
 
 import Header from '../components/Header';
