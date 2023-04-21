@@ -1,4 +1,6 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { Box, Typography } from '@mui/material';
+import { red, yellow } from '@mui/material/colors';
 
 import type { TodoItemType } from '../types';
 
@@ -7,6 +9,12 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 	const utcDate = new Date(dueDate);
 	const jstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000);
 	const dueDate_JST = jstDate.toISOString().slice(0, 16);
+
+	const isPastDue = (dueDateUTC: string) => {
+		const currentDateTime = new Date();
+		const dueDate = new Date(dueDateUTC);
+		return currentDateTime > dueDate;
+	};
 
 	return (
 		<Box
@@ -20,6 +28,12 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 				borderRadius: 1,
 				boxShadow: 1,
 				...(isCompleted ? { textDecoration: 'line-through' } : {}),
+				...(isPastDue(dueDate)
+					? {
+							backgroundColor: red[100],
+							fontWeight: 'bold',
+					  }
+					: {}),
 			}}
 		>
 			<Typography
@@ -33,6 +47,7 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
+					lineHeight: '2em',
 				}}
 			>
 				{title}
@@ -48,6 +63,7 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
+					lineHeight: '2em',
 				}}
 			>
 				{description}
@@ -63,6 +79,13 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
+					lineHeight: '2em',
+					...(isPastDue(dueDate)
+						? {
+								color: red[300],
+								fontWeight: 'bold',
+						  }
+						: {}),
 				}}
 			>
 				{dueDate_JST}

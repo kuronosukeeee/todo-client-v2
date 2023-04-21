@@ -6,7 +6,7 @@ import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 export default class ApiClient {
 	static createInstance(): AxiosInstance {
 		const instance = axios.create({
-			baseURL: 'http://localhost:5000/api/Todo',
+			baseURL: 'https://new-employee-todo.azurewebsites.net/api/Todo',
 			responseType: 'json',
 			headers: {
 				'Content-Type': 'application/json',
