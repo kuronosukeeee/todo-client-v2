@@ -4,17 +4,7 @@ import { red } from '@mui/material/colors';
 
 import type { TodoItemProps } from '../types';
 
-const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: TodoItemProps) => {
-	// UTCをJSTに変換して表示
-	const dueDate_JST = new Date(dueDate).toLocaleString('ja-JP', {
-		timeZone: 'Asia/Tokyo',
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-		hour: '2-digit',
-		minute: '2-digit',
-	});
-
+const TodoItem = ({ title, description, dueDate, isCompleted, currentTime, dueDateString, completedDateString }: TodoItemProps) => {
 	const isPastDue = (dueDateUTC: string, currentTime: Date) => {
 		const dueDate = new Date(dueDateUTC);
 		return currentTime > dueDate;
@@ -24,7 +14,7 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: Tod
 		<Box
 			sx={{
 				display: 'grid',
-				gridTemplateColumns: '1fr 1fr 1fr',
+				gridTemplateColumns: '1fr 1fr 1fr 1fr',
 				gap: 1,
 				alignItems: 'center',
 				backgroundColor: 'background.paper',
@@ -45,8 +35,8 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: Tod
 					textAlign: 'center',
 					minHeight: '2em',
 					maxHeight: '2em',
-					minWidth: '10em',
-					maxWidth: '10em',
+					minWidth: '12em',
+					maxWidth: '12em',
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
@@ -61,8 +51,8 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: Tod
 				sx={{
 					minHeight: '2em',
 					maxHeight: '2em',
-					minWidth: '10em',
-					maxWidth: '10em',
+					minWidth: '12em',
+					maxWidth: '12em',
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
@@ -77,8 +67,8 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: Tod
 					textAlign: 'center',
 					minHeight: '2em',
 					maxHeight: '2em',
-					minWidth: '10em',
-					maxWidth: '10em',
+					minWidth: '12em',
+					maxWidth: '12em',
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
@@ -91,7 +81,29 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: Tod
 						: {}),
 				}}
 			>
-				{dueDate_JST}
+				{dueDateString}
+			</Typography>
+			<Typography
+				variant="body1"
+				sx={{
+					textAlign: 'center',
+					minHeight: '2em',
+					maxHeight: '2em',
+					minWidth: '12em',
+					maxWidth: '12em',
+					textOverflow: 'ellipsis',
+					overflow: 'hidden',
+					whiteSpace: 'nowrap',
+					lineHeight: '2em',
+					...(isPastDue(dueDate, currentTime)
+						? {
+								color: red[900],
+								fontWeight: 'bold',
+						  }
+						: {}),
+				}}
+			>
+				{completedDateString ? '済：' + completedDateString : ''}
 			</Typography>
 		</Box>
 	);

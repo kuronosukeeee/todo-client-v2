@@ -5,6 +5,8 @@ export type TodoItemType = {
 	dueDate: string;
 	completedDate: string | null;
 	isCompleted: boolean;
+	dueDateString: string;
+	completedDateString: string | null;
 };
 
 export type TodoItemProps = TodoItemType & {

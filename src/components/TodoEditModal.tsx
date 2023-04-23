@@ -91,7 +91,7 @@ const TodoEditModal = ({ handleClose, onUpdateTodo, currentTodo }: TodoEditModal
 				<TextField
 					label="期日"
 					type="datetime-local"
-					value={utcToJst(editedTodo.dueDate)}
+					value={editedTodo.dueDateString}
 					onChange={(e) => {
 						handleChange('dueDate', e.target.value);
 					}}
