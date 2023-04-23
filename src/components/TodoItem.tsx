@@ -6,9 +6,14 @@ import type { TodoItemProps } from '../types';
 
 const TodoItem = ({ title, description, dueDate, isCompleted, currentTime }: TodoItemProps) => {
 	// UTCをJSTに変換して表示
-	const utcDate = new Date(dueDate);
-	const jstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000);
-	const dueDate_JST = jstDate.toISOString().slice(0, 16);
+	const dueDate_JST = new Date(dueDate).toLocaleString('ja-JP', {
+		timeZone: 'Asia/Tokyo',
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+	});
 
 	const isPastDue = (dueDateUTC: string, currentTime: Date) => {
 		const dueDate = new Date(dueDateUTC);

@@ -99,8 +99,9 @@ const TodoList = () => {
 		// setIntervalが返すタイマーIDを変数に代入（タイマーをクリアする際に使用）
 		const timer = setInterval(() => {
 			// 状態変数が更新される際に、状態変数が定義されたコンポーネントと、その子コンポーネントが再レンダリングされる仕組みを利用して、タスクの期日切れをチェック
-			setCurrentTime(new Date());
-			console.log(currentTime);
+			const now = new Date();
+			setCurrentTime(now);
+			console.log(now);
 		}, 1000 * 60); //60秒ごとに更新
 		// useEffectのコールバック関数内で返される関数をクリーンアップ関数という。コンポーネントがアンマウントされる（ページ遷移などの）前に実行される。副作用を適切に解除してメモリリークを防ぐ目的で使用。ここでタイマー関数を使用する。
 		return () => {

@@ -7,9 +7,9 @@ export default class ApiClient {
 	static createInstance(): AxiosInstance {
 		const instance = axios.create({
 			// テスト用
-			baseURL: 'http://localhost:5298/api/Todo',
+			// baseURL: 'http://localhost:5298/api/Todo',
 			// 本番用
-			// baseURL: 'https://new-employee-todo.azurewebsites.net/api/Todo',
+			baseURL: 'https://new-employee-todo.azurewebsites.net/api/Todo',
 			responseType: 'json',
 			headers: {
 				'Content-Type': 'application/json',
