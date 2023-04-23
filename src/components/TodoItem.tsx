@@ -42,6 +42,7 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 					textAlign: 'center',
 					minHeight: '2em',
 					maxHeight: '2em',
+					minWidth: '8em',
 					maxWidth: '10em',
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
@@ -57,6 +58,7 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 				sx={{
 					minHeight: '2em',
 					maxHeight: '2em',
+					minWidth: '8em',
 					maxWidth: '10em',
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
@@ -72,6 +74,7 @@ const TodoItem = ({ title, description, dueDate, isCompleted }: TodoItemType) =>
 					textAlign: 'center',
 					minHeight: '2em',
 					maxHeight: '2em',
+					minWidth: '8em',
 					maxWidth: '10em',
 					textOverflow: 'ellipsis',
 					overflow: 'hidden',
