@@ -7,6 +7,10 @@ export type TodoItemType = {
 	isCompleted: boolean;
 };
 
+export type TodoItemProps = TodoItemType & {
+	currentTime: Date;
+};
+
 export type PostDataType = Omit<TodoItemType, id>;
 
 export type TodoEditModalPropsType = {
@@ -15,19 +19,19 @@ export type TodoEditModalPropsType = {
 	currentTodo: TodoItemType;
 };
 
-type AddTodoFormProps = {
+export type AddTodoFormProps = {
 	todoItems: TodoItemType[];
 	setTodoItems: (todoItems: TodoItemType[]) => void;
 	errorMessage: string;
 	setErrorMessage: (messege: string) => void;
 };
 
-type ErrorMessageProps = {
+export type ErrorMessageProps = {
 	message: string;
 	handleClose: () => void;
 };
 
-type TodoFilterRadioButtonsProps = {
+export type TodoFilterRadioButtonsProps = {
 	selectedValue: string;
 	onFilterChange: (filterOption: 'all' | 'incomplete' | 'complete') => void;
 };

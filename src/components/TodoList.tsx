@@ -21,8 +21,7 @@ const TodoList = () => {
 	const [currentTodo, setCurrentTodo] = useState<TodoItemType | null>(null);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [selectedValue, setSelectedValue] = useState('all');
-
-	const showModal = currentTodo !== null;
+	const [currentTime, setCurrentTime] = useState(new Date());
 
 	useEffect(() => {
 		getAllTodo();
@@ -34,6 +33,7 @@ const TodoList = () => {
 			setTodoItems(response.data);
 			setErrorMessage('');
 		} catch (error) {
+			console.log(error);
 			setErrorMessage('タスクの読み込みに失敗しました。画面を更新してください。');
 		}
 	};
@@ -95,6 +95,21 @@ const TodoList = () => {
 		setSelectedValue(filter);
 	};
 
+	useEffect(() => {
+		// setIntervalが返すタイマーIDを変数に代入（タイマーをクリアする際に使用）
+		const timer = setInterval(() => {
+			// 状態変数が更新される際に、状態変数が定義されたコンポーネントと、その子コンポーネントが再レンダリングされる仕組みを利用して、タスクの期日切れをチェック
+			setCurrentTime(new Date());
+			console.log(currentTime);
+		}, 1000 * 60); //60秒ごとに更新
+		// useEffectのコールバック関数内で返される関数をクリーンアップ関数という。コンポーネントがアンマウントされる（ページ遷移などの）前に実行される。副作用を適切に解除してメモリリークを防ぐ目的で使用。ここでタイマー関数を使用する。
+		return () => {
+			clearInterval(timer);
+		};
+	}, []);
+
+	const showModal = currentTodo !== null;
+
 	return (
 		<>
 			<AddTodoForm todoItems={todoItems} setTodoItems={setTodoItems} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
@@ -129,7 +144,7 @@ const TodoList = () => {
 					>
 						<DeleteIcon />
 					</Fab>
-					<TodoItem {...todo} />
+					<TodoItem {...todo} currentTime={currentTime} />
 				</Box>
 			))}
 			{showModal && <TodoEditModal handleClose={() => setCurrentTodo(null)} onUpdateTodo={onUpdateTodo} currentTodo={currentTodo} />}
