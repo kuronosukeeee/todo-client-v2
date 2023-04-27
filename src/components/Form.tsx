@@ -12,18 +12,18 @@ import type { FormProps } from '../types';
 const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }: FormProps) => {
 	const [inputTitle, setInputTitle] = useState('');
 	const [inputDescription, setInputDescription] = useState('');
-	const [inputDueDate_JST, setInputDueDate_JST] = useState('');
+	const [inputDueDate, setInputDueDate] = useState('');
 
 	const handleAddTodo = async () => {
 		if (inputTitle === '') {
 			alert('件名は必須項目です');
-		} else if (inputDueDate_JST === '') {
+		} else if (inputDueDate === '') {
 			alert('期日は必須項目です');
 		} else if (inputDescription.length > 100) {
 			alert('詳細は100文字以内で入力してください');
 		} else {
 			try {
-				const dueDate = new Date(inputDueDate_JST).toISOString();
+				const dueDate = new Date(inputDueDate).toISOString();
 
 				const response = await ApiClient.postTodoItem({
 					title: inputTitle,
@@ -42,7 +42,7 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 	const resetTodo = () => {
 		setInputTitle('');
 		setInputDescription('');
-		setInputDueDate_JST('');
+		setInputDueDate('');
 	};
 
 	return (
@@ -74,9 +74,9 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 				<TextField
 					label="期日（*必須）"
 					type="datetime-local"
-					value={inputDueDate_JST}
+					value={inputDueDate}
 					onChange={(e) => {
-						setInputDueDate_JST(e.target.value);
+						setInputDueDate(e.target.value);
 					}}
 					margin="dense"
 					fullWidth

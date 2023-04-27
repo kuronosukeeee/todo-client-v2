@@ -1,8 +1,8 @@
 import { Box, Container, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 
-import type { TodoFilterRadioButtonsProps } from '../types';
+import type { FilterButtonsProps } from '../types';
 
-const TodoFilterRadioButtons = ({ selectedValue, onFilterChange }: TodoFilterRadioButtonsProps) => {
+const FilterButtons = ({ selectedValue, onFilterChange }: FilterButtonsProps) => {
 	return (
 		<Container>
 			<Box display="flex" justifyContent="center" alignItems="center" margin={2}>
@@ -16,4 +16,4 @@ const TodoFilterRadioButtons = ({ selectedValue, onFilterChange }: TodoFilterRad
 	);
 };
 
-export default TodoFilterRadioButtons;
+export default FilterButtons;
