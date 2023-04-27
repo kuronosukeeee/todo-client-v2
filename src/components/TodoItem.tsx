@@ -4,10 +4,10 @@ import { red } from '@mui/material/colors';
 
 import type { TodoItemProps } from '../types';
 
-const TodoItem = ({ title, description, dueDate, isCompleted, currentTime, dueDateString, completedDateString }: TodoItemProps) => {
-	const isPastDue = (dueDateUTC: string, currentTime: Date) => {
+const TodoItem = ({ title, description, dueDate, completionDate, currentUtcTime, formatDateForJst }: TodoItemProps) => {
+	const isPastDue = (dueDateUTC: string, currentUtcTime: Date) => {
 		const dueDate = new Date(dueDateUTC);
-		return currentTime > dueDate;
+		return currentUtcTime > dueDate;
 	};
 
 	return (
@@ -21,10 +21,10 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime, dueDa
 				padding: 1,
 				borderRadius: 1,
 				boxShadow: 1,
-				...(isCompleted ? { textDecoration: 'line-through' } : {}),
-				...(isPastDue(dueDate, currentTime)
+				...(completionDate ? { textDecoration: 'line-through' } : {}),
+				...(isPastDue(dueDate, currentUtcTime)
 					? {
-							backgroundColor: red[300],
+							backgroundColor: red[200],
 					  }
 					: {}),
 			}}
@@ -41,6 +41,11 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime, dueDa
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
 					lineHeight: '2em',
+					...(isPastDue(dueDate, currentUtcTime)
+						? {
+								fontWeight: 'bold',
+						  }
+						: {}),
 				}}
 			>
 				{title}
@@ -73,15 +78,15 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime, dueDa
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
 					lineHeight: '2em',
-					...(isPastDue(dueDate, currentTime)
+					...(isPastDue(dueDate, currentUtcTime)
 						? {
-								color: red[900],
+								color: red[800],
 								fontWeight: 'bold',
 						  }
 						: {}),
 				}}
 			>
-				{dueDateString}
+				{formatDateForJst(dueDate)}
 			</Typography>
 			<Typography
 				variant="body1"
@@ -95,15 +100,9 @@ const TodoItem = ({ title, description, dueDate, isCompleted, currentTime, dueDa
 					overflow: 'hidden',
 					whiteSpace: 'nowrap',
 					lineHeight: '2em',
-					...(isPastDue(dueDate, currentTime)
-						? {
-								color: red[900],
-								fontWeight: 'bold',
-						  }
-						: {}),
 				}}
 			>
-				{completedDateString ? '済：' + completedDateString : ''}
+				{completionDate ? '済：' + formatDateForJst(completionDate) : ''}
 			</Typography>
 		</Box>
 	);

@@ -3,27 +3,25 @@ export type TodoItemType = {
 	title: string;
 	description: string;
 	dueDate: string;
-	completedDate: string | null;
-	isCompleted: boolean;
-	dueDateString: string;
-	completedDateString: string | null;
+	completionDate: string | null;
 };
 
-export type TodoItemProps = TodoItemType & {
-	currentTime: Date;
+export type TodoItemProps = TodoItem & {
+	currentUtcTime: Date;
+	formatDateForJst: (utcDateString: string) => string;
 };
 
-export type PostDataType = Omit<TodoItemType, id>;
+export type PostData = Omit<TodoItem, id>;
 
-export type TodoEditModalPropsType = {
+export type EditModalProps = {
 	handleClose: () => void;
-	onUpdateTodo: (editedTodo: TodoItemType) => void;
-	currentTodo: TodoItemType;
+	onUpdateTodo: (editedTodo: TodoItem) => void;
+	currentTodo: TodoItem;
 };
 
-export type AddTodoFormProps = {
-	todoItems: TodoItemType[];
-	setTodoItems: (todoItems: TodoItemType[]) => void;
+export type FormProps = {
+	todoItems: TodoItem[];
+	setTodoItems: (todoItems: TodoItem[]) => void;
 	errorMessage: string;
 	setErrorMessage: (messege: string) => void;
 };
@@ -33,7 +31,14 @@ export type ErrorMessageProps = {
 	handleClose: () => void;
 };
 
-export type TodoFilterRadioButtonsProps = {
+export type FilterButtonsProps = {
 	selectedValue: string;
 	onFilterChange: (filterOption: 'all' | 'incomplete' | 'complete') => void;
+};
+
+export type ActionButtonsProps = {
+	todo: TodoItem;
+	handleToggleTodoStatus: (id: number) => void;
+	onSetCurrentTodo: (TodoItem: TodoItemType) => void;
+	handleDeleteTodo: (id: number) => void;
 };

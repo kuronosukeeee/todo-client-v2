@@ -7,28 +7,30 @@ import ApiClient from '../lib/apiClient';
 
 import ErrorMessage from './ErrorMessage';
 
-import type { AddTodoFormProps } from '../types';
+import type { FormProps } from '../types';
 
-const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }: AddTodoFormProps) => {
+const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }: FormProps) => {
 	const [inputTitle, setInputTitle] = useState('');
 	const [inputDescription, setInputDescription] = useState('');
-	const [inputDueDate_JST, setinputDueDate_JST] = useState('');
+	const [inputDueDate_JST, setInputDueDate_JST] = useState('');
 
 	const handleAddTodo = async () => {
 		if (inputTitle === '') {
 			alert('件名は必須項目です');
 		} else if (inputDueDate_JST === '') {
 			alert('期日は必須項目です');
+		} else if (inputDescription.length > 100) {
+			alert('詳細は100文字以内で入力してください');
 		} else {
 			try {
-				const response = await ApiClient.postTodoItem('', {
+				const dueDate = new Date(inputDueDate_JST).toISOString();
+
+				const response = await ApiClient.postTodoItem({
 					title: inputTitle,
 					description: inputDescription,
-					dueDate: inputDueDate_JST,
-					completedDate: null,
-					isCompleted: false,
+					dueDate: dueDate,
 				});
-				setTodoItems([...todoItems, response.data]);
+				setTodoItems([...todoItems, response]);
 				resetTodo();
 				setErrorMessage('');
 			} catch (error) {
@@ -40,7 +42,7 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 	const resetTodo = () => {
 		setInputTitle('');
 		setInputDescription('');
-		setinputDueDate_JST('');
+		setInputDueDate_JST('');
 	};
 
 	return (
@@ -74,7 +76,7 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 					type="datetime-local"
 					value={inputDueDate_JST}
 					onChange={(e) => {
-						setinputDueDate_JST(e.target.value);
+						setInputDueDate_JST(e.target.value);
 					}}
 					margin="dense"
 					fullWidth

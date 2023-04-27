@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { PostDataType, TodoItemType } from '../types/index';
+import type { PostData, TodoItemType } from '../types/index';
 import type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 export default class ApiClient {
@@ -9,7 +9,7 @@ export default class ApiClient {
 			// テスト用
 			// baseURL: 'http://localhost:5298/api/Todo',
 			// 本番用
-			baseURL: 'https://new-employee-todo.azurewebsites.net/api/Todo',
+			baseURL: 'https://new-employee-todoapi.azurewebsites.net/api/Todo',
 			responseType: 'json',
 			headers: {
 				'Content-Type': 'application/json',
@@ -34,23 +34,11 @@ export default class ApiClient {
 	}
 
 	// 全件取得
-	static async getTodoItems(url: string): Promise<any> {
+	static async getTodoItems(): Promise<TodoItemType[]> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType[]> = await instance.get(url);
-			return response;
-		} catch (error) {
-			console.error('タスクの取得に失敗しました:', error);
-			return Promise.reject(error);
-		}
-	}
-
-	// 個別取得
-	static async getTodoItem(url: string): Promise<any> {
-		const instance = this.createInstance();
-		try {
-			const response: AxiosResponse<TodoItemType> = await instance.get(url);
-			return response;
+			const response: AxiosResponse<TodoItemType[]> = await instance.get('');
+			return response.data;
 		} catch (error) {
 			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
@@ -58,11 +46,11 @@ export default class ApiClient {
 	}
 
 	// 未完了タスクの取得
-	static async getIncompleteTodoItem(url: string): Promise<any> {
+	static async getIncompleteTodoItems(showIncompleteTodos = true): Promise<TodoItemType[]> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType[]> = await instance.get(url);
-			return response;
+			const response: AxiosResponse<TodoItemType[]> = await instance.get('', { params: { showIncompleteTodos } });
+			return response.data;
 		} catch (error) {
 			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
@@ -70,11 +58,11 @@ export default class ApiClient {
 	}
 
 	// 完了済タスクの取得
-	static async getCompleteTodoItem(url: string): Promise<any> {
+	static async getCompletedTodoItems(showCompletedTodos = true): Promise<TodoItemType[]> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType[]> = await instance.get(url);
-			return response;
+			const response: AxiosResponse<TodoItemType[]> = await instance.get('', { params: { showCompletedTodos } });
+			return response.data;
 		} catch (error) {
 			console.error('タスクの取得に失敗しました:', error);
 			return Promise.reject(error);
@@ -82,11 +70,11 @@ export default class ApiClient {
 	}
 
 	// 追加
-	static async postTodoItem(url: string, data?: PostDataType): Promise<any> {
+	static async postTodoItem(data: PostData): Promise<TodoItemType> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType> = await instance.post(url, data);
-			return response;
+			const response: AxiosResponse<TodoItemType> = await instance.post('', data);
+			return response.data;
 		} catch (error) {
 			console.error('タスクの追加に失敗しました:', error);
 			return Promise.reject(error);
@@ -94,11 +82,23 @@ export default class ApiClient {
 	}
 
 	// 更新
-	static async updateTodoItem(url: string, data?: TodoItemType): Promise<any> {
+	static async updateTodoItem(data: TodoItemType): Promise<TodoItemType> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType> = await instance.put(url, data);
-			return response;
+			const response: AxiosResponse<TodoItemType> = await instance.put(`${data.id}`, data);
+			return response.data;
+		} catch (error) {
+			console.error('タスクの更新に失敗しました:', error);
+			return Promise.reject(error);
+		}
+	}
+
+	// タスク状態の更新
+	static async updateTodoStatus(data: TodoItemType): Promise<TodoItemType> {
+		const instance = this.createInstance();
+		try {
+			const response: AxiosResponse<TodoItemType> = await instance.put(`/Status/${data.id}`, data);
+			return response.data;
 		} catch (error) {
 			console.error('タスクの更新に失敗しました:', error);
 			return Promise.reject(error);
@@ -106,11 +106,11 @@ export default class ApiClient {
 	}
 
 	// 削除
-	static async deleteTodoItem(url: string): Promise<any> {
+	static async deleteTodoItem(id: number): Promise<TodoItemType> {
 		const instance = this.createInstance();
 		try {
-			const response: AxiosResponse<TodoItemType> = await instance.delete(url);
-			return response;
+			const response: AxiosResponse<TodoItemType> = await instance.delete(`${id}`);
+			return response.data;
 		} catch (error) {
 			console.error('タスクの削除に失敗しました:', error);
 			return Promise.reject(error);
