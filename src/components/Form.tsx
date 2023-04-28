@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Box, Button, Container, TextField } from '@mui/material';
 import { blue, grey } from '@mui/material/colors';
+import { AxiosError } from 'axios';
 
 import ApiClient from '../lib/apiClient';
 
@@ -34,7 +35,13 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 				resetTodo();
 				setErrorMessage('');
 			} catch (error) {
-				setErrorMessage('タスクの追加に失敗しました。もう一度お試しください。');
+				// サーバーからのエラーメッセージがある場合
+				if (error instanceof AxiosError && error.response) {
+					setErrorMessage(error.response.data.message);
+					// 通信エラーやネットワークエラーの場合
+				} else {
+					setErrorMessage('タスクの追加に失敗しました。もう一度お試しください。');
+				}
 			}
 		}
 	};

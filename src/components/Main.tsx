@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Box } from '@mui/material';
+import { AxiosError } from 'axios';
 
 import ApiClient from '../lib/apiClient';
 
@@ -30,8 +31,13 @@ const Main = () => {
 			setTodoItems(response);
 			setErrorMessage('');
 		} catch (error) {
-			console.log(error);
-			setErrorMessage('タスクの読み込みに失敗しました。画面を更新してください。');
+			// サーバーからのエラーメッセージがある場合
+			if (error instanceof AxiosError && error.response) {
+				setErrorMessage(error.response.data.message);
+				// 通信エラーやネットワークエラーの場合
+			} else {
+				setErrorMessage('タスクの読み込みに失敗しました。画面を更新してください。');
+			}
 		}
 	};
 
@@ -48,7 +54,13 @@ const Main = () => {
 				setTodoItems(todoItems.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)));
 				setErrorMessage('');
 			} catch (error) {
-				setErrorMessage('タスクの編集に失敗しました。もう一度お試しください。');
+				// サーバーからのエラーメッセージがある場合
+				if (error instanceof AxiosError && error.response) {
+					setErrorMessage(error.response.data.message);
+					// 通信エラーやネットワークエラーの場合
+				} else {
+					setErrorMessage('タスクの編集に失敗しました。もう一度お試しください。');
+				}
 			}
 		}
 	};
@@ -59,7 +71,13 @@ const Main = () => {
 			setTodoItems(todoItems.filter((todo) => todo.id !== id));
 			setErrorMessage('');
 		} catch (error) {
-			setErrorMessage('タスクの削除に失敗しました。もう一度お試しください。');
+			// サーバーからのエラーメッセージがある場合
+			if (error instanceof AxiosError && error.response) {
+				setErrorMessage(error.response.data.message);
+				// 通信エラーやネットワークエラーの場合
+			} else {
+				setErrorMessage('タスクの削除に失敗しました。もう一度お試しください。');
+			}
 		}
 	};
 
@@ -73,7 +91,13 @@ const Main = () => {
 			setTodoItems(todoItems.map((todo) => (todo.id === targetTodo.id ? updatedTodo : todo)));
 			setErrorMessage('');
 		} catch (error) {
-			setErrorMessage('タスクの状態更新に失敗しました。もう一度お試しください。');
+			// サーバーからのエラーメッセージがある場合
+			if (error instanceof AxiosError && error.response) {
+				setErrorMessage(error.response.data.message);
+				// 通信エラーやネットワークエラーの場合
+			} else {
+				setErrorMessage('タスクの状態更新に失敗しました。もう一度お試しください。');
+			}
 		}
 	};
 
@@ -94,9 +118,15 @@ const Main = () => {
 			setTodoItems(response);
 			setErrorMessage('');
 		} catch (error) {
-			setErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
+			// サーバーからのエラーメッセージがある場合
+			if (error instanceof AxiosError && error.response) {
+				setErrorMessage(error.response.data.message);
+				// 通信エラーやネットワークエラーの場合
+			} else {
+				setErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
+			}
+			setSelectedValue(filter);
 		}
-		setSelectedValue(filter);
 	};
 
 	useEffect(() => {
