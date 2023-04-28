@@ -37,7 +37,7 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 			} catch (error) {
 				// サーバーからのエラーメッセージがある場合
 				if (error instanceof AxiosError && error.response) {
-					setErrorMessage(error.response.data.message);
+					setErrorMessage(error.response.data);
 					// 通信エラーやネットワークエラーの場合
 				} else {
 					setErrorMessage('タスクの追加に失敗しました。もう一度お試しください。');

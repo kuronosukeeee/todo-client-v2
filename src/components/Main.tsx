@@ -33,7 +33,7 @@ const Main = () => {
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data.message);
+				setErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				setErrorMessage('タスクの読み込みに失敗しました。画面を更新してください。');
@@ -56,7 +56,7 @@ const Main = () => {
 			} catch (error) {
 				// サーバーからのエラーメッセージがある場合
 				if (error instanceof AxiosError && error.response) {
-					setErrorMessage(error.response.data.message);
+					setErrorMessage(error.response.data);
 					// 通信エラーやネットワークエラーの場合
 				} else {
 					setErrorMessage('タスクの編集に失敗しました。もう一度お試しください。');
@@ -73,7 +73,7 @@ const Main = () => {
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data.message);
+				setErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				setErrorMessage('タスクの削除に失敗しました。もう一度お試しください。');
@@ -93,7 +93,7 @@ const Main = () => {
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data.message);
+				setErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				setErrorMessage('タスクの状態更新に失敗しました。もう一度お試しください。');
@@ -120,7 +120,7 @@ const Main = () => {
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data.message);
+				setErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				setErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
