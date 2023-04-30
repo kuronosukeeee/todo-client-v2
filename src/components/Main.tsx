@@ -35,7 +35,7 @@ const Main = ({ initialTodoItems, errorMessage, onSetErrorMessage }: MainProps) 
 			} catch (error) {
 				// サーバーからのエラーメッセージがある場合
 				if (error instanceof AxiosError && error.response) {
-					onSetErrorMessage(error.response.data);
+					onSetErrorMessage(error.response.data.message);
 					// 通信エラーやネットワークエラーの場合
 				} else {
 					onSetErrorMessage('タスクの編集に失敗しました。もう一度お試しください。');
@@ -52,7 +52,7 @@ const Main = ({ initialTodoItems, errorMessage, onSetErrorMessage }: MainProps) 
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				onSetErrorMessage(error.response.data);
+				onSetErrorMessage(error.response.data.message);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				onSetErrorMessage('タスクの削除に失敗しました。もう一度お試しください。');
@@ -72,7 +72,7 @@ const Main = ({ initialTodoItems, errorMessage, onSetErrorMessage }: MainProps) 
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				onSetErrorMessage(error.response.data);
+				onSetErrorMessage(error.response.data.message);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				onSetErrorMessage('タスクの状態更新に失敗しました。もう一度お試しください。');
@@ -100,7 +100,7 @@ const Main = ({ initialTodoItems, errorMessage, onSetErrorMessage }: MainProps) 
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				onSetErrorMessage(error.response.data);
+				onSetErrorMessage(error.response.data.message);
 				// 通信エラーやネットワークエラーの場合
 			} else {
 				onSetErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
