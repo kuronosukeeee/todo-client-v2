@@ -12,34 +12,13 @@ import FilterButtons from './FilterButtons';
 import Form from './Form';
 import TodoItem from './TodoItem';
 
-import type { TodoItemType } from '../types';
+import type { MainProps, TodoItemType } from '../types';
 
-const Main = () => {
-	const [todoItems, setTodoItems] = useState<TodoItemType[]>([]);
+const Main = ({ initialTodoItems, errorMessage, onSetErrorMessage }: MainProps) => {
+	const [todoItems, setTodoItems] = useState<TodoItemType[]>(initialTodoItems);
 	const [currentTodo, setCurrentTodo] = useState<TodoItemType | null>(null);
-	const [errorMessage, setErrorMessage] = useState('');
 	const [selectedValue, setSelectedValue] = useState('all');
 	const [currentUtcTime, setCurrentUtcTime] = useState(new Date());
-
-	useEffect(() => {
-		getAllTodos();
-	}, []);
-
-	const getAllTodos = async () => {
-		try {
-			const response = await ApiClient.getTodoItems();
-			setTodoItems(response);
-			setErrorMessage('');
-		} catch (error) {
-			// サーバーからのエラーメッセージがある場合
-			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data);
-				// 通信エラーやネットワークエラーの場合
-			} else {
-				setErrorMessage('タスクの読み込みに失敗しました。画面を更新してください。');
-			}
-		}
-	};
 
 	const onUpdateTodo = async (editedTodo: TodoItemType) => {
 		if (editedTodo.title === '') {
@@ -52,14 +31,14 @@ const Main = () => {
 			try {
 				await ApiClient.updateTodoItem(editedTodo);
 				setTodoItems(todoItems.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo)));
-				setErrorMessage('');
+				onSetErrorMessage('');
 			} catch (error) {
 				// サーバーからのエラーメッセージがある場合
 				if (error instanceof AxiosError && error.response) {
-					setErrorMessage(error.response.data);
+					onSetErrorMessage(error.response.data);
 					// 通信エラーやネットワークエラーの場合
 				} else {
-					setErrorMessage('タスクの編集に失敗しました。もう一度お試しください。');
+					onSetErrorMessage('タスクの編集に失敗しました。もう一度お試しください。');
 				}
 			}
 		}
@@ -69,14 +48,14 @@ const Main = () => {
 		try {
 			await ApiClient.deleteTodoItem(id);
 			setTodoItems(todoItems.filter((todo) => todo.id !== id));
-			setErrorMessage('');
+			onSetErrorMessage('');
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data);
+				onSetErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
-				setErrorMessage('タスクの削除に失敗しました。もう一度お試しください。');
+				onSetErrorMessage('タスクの削除に失敗しました。もう一度お試しください。');
 			}
 		}
 	};
@@ -89,19 +68,20 @@ const Main = () => {
 			}
 			const updatedTodo = await ApiClient.updateTodoStatus(targetTodo);
 			setTodoItems(todoItems.map((todo) => (todo.id === targetTodo.id ? updatedTodo : todo)));
-			setErrorMessage('');
+			onSetErrorMessage('');
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data);
+				onSetErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
-				setErrorMessage('タスクの状態更新に失敗しました。もう一度お試しください。');
+				onSetErrorMessage('タスクの状態更新に失敗しました。もう一度お試しください。');
 			}
 		}
 	};
 
 	const onFilterChange = async (filter: string) => {
+		setSelectedValue(filter);
 		try {
 			let response;
 			switch (filter) {
@@ -116,16 +96,15 @@ const Main = () => {
 					break;
 			}
 			setTodoItems(response);
-			setErrorMessage('');
+			onSetErrorMessage('');
 		} catch (error) {
 			// サーバーからのエラーメッセージがある場合
 			if (error instanceof AxiosError && error.response) {
-				setErrorMessage(error.response.data);
+				onSetErrorMessage(error.response.data);
 				// 通信エラーやネットワークエラーの場合
 			} else {
-				setErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
+				onSetErrorMessage('表示の切り替えに失敗しました。もう一度お試しください。');
 			}
-			setSelectedValue(filter);
 		}
 	};
 
@@ -167,7 +146,7 @@ const Main = () => {
 
 	return (
 		<>
-			<Form todoItems={todoItems} setTodoItems={setTodoItems} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+			<Form todoItems={todoItems} setTodoItems={setTodoItems} errorMessage={errorMessage} onSetErrorMessage={onSetErrorMessage} />
 			<FilterButtons selectedValue={selectedValue} onFilterChange={onFilterChange} />
 			{todoItems.map((todo) => (
 				<Box display="flex" justifyContent="center" alignItems="center" key={todo.id}>
@@ -181,7 +160,7 @@ const Main = () => {
 				</Box>
 			))}
 			{showModal && <EditModal handleClose={() => setCurrentTodo(null)} onUpdateTodo={onUpdateTodo} currentTodo={currentTodo} />}
-			{errorMessage && <ErrorMessage message={errorMessage} handleClose={() => setErrorMessage('')} />}
+			{errorMessage && <ErrorMessage message={errorMessage} handleClose={() => onSetErrorMessage('')} />}
 		</>
 	);
 };

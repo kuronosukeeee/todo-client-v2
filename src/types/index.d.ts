@@ -23,7 +23,7 @@ export type FormProps = {
 	todoItems: TodoItem[];
 	setTodoItems: (todoItems: TodoItem[]) => void;
 	errorMessage: string;
-	setErrorMessage: (messege: string) => void;
+	onSetErrorMessage: (message: string) => void;
 };
 
 export type ErrorMessageProps = {
@@ -41,4 +41,10 @@ export type ActionButtonsProps = {
 	handleToggleTodoStatus: (id: number) => void;
 	onSetCurrentTodo: (TodoItem: TodoItemType) => void;
 	handleDeleteTodo: (id: number) => void;
+};
+
+export type MainProps = {
+	initialTodoItems: TodoItemType[];
+	errorMessage: string;
+	onSetErrorMessage: (string) => void;
 };

@@ -10,7 +10,7 @@ import ErrorMessage from './ErrorMessage';
 
 import type { FormProps } from '../types';
 
-const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }: FormProps) => {
+const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, onSetErrorMessage }: FormProps) => {
 	const [inputTitle, setInputTitle] = useState('');
 	const [inputDescription, setInputDescription] = useState('');
 	const [inputDueDate, setInputDueDate] = useState('');
@@ -33,14 +33,14 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 				});
 				setTodoItems([...todoItems, response]);
 				resetTodo();
-				setErrorMessage('');
+				onSetErrorMessage('');
 			} catch (error) {
 				// サーバーからのエラーメッセージがある場合
 				if (error instanceof AxiosError && error.response) {
-					setErrorMessage(error.response.data);
+					onSetErrorMessage(error.response.data);
 					// 通信エラーやネットワークエラーの場合
 				} else {
-					setErrorMessage('タスクの追加に失敗しました。もう一度お試しください。');
+					onSetErrorMessage('タスクの追加に失敗しました。もう一度お試しください。');
 				}
 			}
 		}
@@ -109,7 +109,7 @@ const AddTodoForm = ({ todoItems, setTodoItems, errorMessage, setErrorMessage }:
 					</Button>
 				</Box>
 			</Box>
-			{errorMessage && <ErrorMessage message={errorMessage} handleClose={() => setErrorMessage('')} />}
+			{errorMessage && <ErrorMessage message={errorMessage} handleClose={() => onSetErrorMessage('')} />}
 		</Container>
 	);
 };
